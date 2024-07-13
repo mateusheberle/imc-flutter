@@ -21,16 +21,20 @@ InputDecoration criarInputDecoration(
 class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
   final Function(String) onChanged;
+  final Function(String) onSubmitted;
   final String label;
   final String hintText;
   final bool isError;
+  final FocusNode focusNode;
 
   const CustomTextField({
     super.key,
     required this.controller,
     required this.onChanged,
+    required this.onSubmitted,
     required this.label,
     required this.hintText,
+    required this.focusNode,
     this.isError = false,
   });
 
@@ -42,6 +46,8 @@ class CustomTextField extends StatelessWidget {
       textInputAction: TextInputAction.next,
       decoration: criarInputDecoration(label, hintText, isError),
       onChanged: onChanged,
+      onSubmitted: onSubmitted,
+      focusNode: focusNode,
     );
   }
 }

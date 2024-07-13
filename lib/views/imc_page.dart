@@ -14,15 +14,51 @@ class ImcPage extends StatefulWidget {
   State<ImcPage> createState() => _ImcPageState();
 }
 
-class _ImcPageState extends State<ImcPage> {
+class _ImcPageState extends State<ImcPage> with SingleTickerProviderStateMixin {
+  final Duration _duration = const Duration(milliseconds: 500);
+
   ImcController imcController = ImcController();
+
+  late AnimationController _animationController;
+  late Animation<Alignment> _alignmentAnimation;
+  late Animation<Size> _sizeAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      duration: _duration,
+      vsync: this,
+    );
+
+    _animationController.addListener(() async {
+      if (_animationController.isCompleted) {
+        await Future.delayed(_duration);
+        _animationController.reverse();
+        // await Future.delayed(_duration);
+        mostrarDialogoIMC(context);
+      }
+    });
+
+    _alignmentAnimation = AlignmentTween(
+      begin: Alignment.bottomCenter,
+      end: Alignment.center,
+    ).animate(_animationController);
+
+    _sizeAnimation = Tween(begin: const Size(0, 0), end: const Size(100, 100))
+        .animate(_animationController);
+  }
 
   @override
   void dispose() {
     imcController.pesoController.dispose();
     imcController.alturaController.dispose();
+    _animationController.dispose();
     super.dispose();
   }
+
+  final FocusNode _pesoFocusNode = FocusNode();
+  final FocusNode _alturaFocusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +84,11 @@ class _ImcPageState extends State<ImcPage> {
                         label: 'Peso',
                         hintText: 'KG (kilogramas)',
                         isError: value,
+                        focusNode: _pesoFocusNode,
+                        onSubmitted: (value) {
+                          _pesoFocusNode.unfocus();
+                          FocusScope.of(context).requestFocus(_alturaFocusNode);
+                        },
                       );
                     },
                   ),
@@ -66,6 +107,11 @@ class _ImcPageState extends State<ImcPage> {
                         label: 'Altura',
                         hintText: 'M (metros)',
                         isError: value,
+                        focusNode: _alturaFocusNode,
+                        onSubmitted: (value) {
+                          _alturaFocusNode.unfocus();
+                          _animationController.forward();
+                        },
                       );
                     },
                   ),
@@ -83,11 +129,10 @@ class _ImcPageState extends State<ImcPage> {
                         onPressed: !value
                             ? null
                             : () {
-                                ImcModel imcModel =
-                                    imcController.processarIMC();
-                                mostrarDialogoIMC(context, imcModel);
+                                FocusScope.of(context).unfocus();
+                                _animationController.forward();
                               },
-                        child: Text('Processar IMC',
+                        child: Text('Calcular IMC',
                             style: TextStyle(color: Colors.grey[800])),
                       );
                     },
@@ -95,17 +140,39 @@ class _ImcPageState extends State<ImcPage> {
                 ],
               ),
             ),
+            AnimatedBuilder(
+              animation: _animationController,
+              builder: (context, child) {
+                return Align(
+                  alignment: _alignmentAnimation.value,
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                    ),
+                    width: _sizeAnimation.value.width,
+                    height: _sizeAnimation.value.height,
+                    child: CircularProgressIndicator(
+                      //value: _animationController.value,
+                      backgroundColor: Colors.grey[300],
+                      valueColor:
+                          AlwaysStoppedAnimation<Color>(Colors.grey[800]!),
+                    ),
+                  ),
+                );
+              },
+            ),
           ],
         ),
       ),
     );
   }
 
-  void mostrarDialogoIMC(BuildContext context, ImcModel imcModel) {
+  void mostrarDialogoIMC(BuildContext context) {
     showDialog(
       context: context,
-      barrierDismissible: false,
+      barrierDismissible: true,
       builder: (BuildContext context) {
+        ImcModel imcModel = imcController.processarIMC();
         return AlertDialog(
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(8)),
@@ -114,7 +181,7 @@ class _ImcPageState extends State<ImcPage> {
           title: const AlertTitle(),
           contentPadding: const EdgeInsets.symmetric(horizontal: 0),
           content: imcController.resultadoImc == 0
-              ? const Center(
+              ? Center(
                   heightFactor: 2,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -122,9 +189,9 @@ class _ImcPageState extends State<ImcPage> {
                       Icon(
                         Icons.warning,
                         size: 30,
-                        color: Colors.green,
+                        color: Colors.grey[800],
                       ),
-                      Padding(
+                      const Padding(
                         padding: EdgeInsets.only(top: 8.0),
                         child: Text(
                           'Os dados não foram \ninformados corretamente',
@@ -180,14 +247,6 @@ class _ImcPageState extends State<ImcPage> {
                     MensagemIMC(imcModel: imcModel)
                   ],
                 ),
-          actions: <Widget>[
-            TextButton(
-              child: Text('Fechar', style: TextStyle(color: Colors.grey[800])),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
         );
       },
     );

@@ -1,38 +1,31 @@
-# Miscellaneous
-*.class
-*.log
-*.pyc
-*.swp
-.DS_Store
-.atom/
-.buildlog/
-.history
-.svn/
-migrate_working_dir/
-
-# IntelliJ related
-*.iml
-*.ipr
-*.iws
-.idea/
-
-# Flutter/Dart/Pub related
-**/doc/api/
-**/ios/Flutter/.last_build_id
+# Arquivos e diretórios gerados pelo Dart
 .dart_tool/
 .flutter-plugins
 .flutter-plugins-dependencies
-.pub-cache/
-.pub/
-android/
-build/
+.packages
+.idea/
+.metadata
+pubspec.lock
+*.iml
+
+# Diretório de build
+/build/
+
+# Arquivos de configuração pessoais
+.vscode/
+
+# Arquivos específicos do sistema operacional
+.DS_Store
+*.swp
+*.swo
+*~
+
+# Arquivos de chaves de API, segredos, etc.
+.env
+
+# Diretórios de build específicos do sistema operacional
 ios/
 linux/
 macos/
 web/
 windows/
-*.lock
-*.metadata
-*.gitattributes
-*.iml
-*.lock

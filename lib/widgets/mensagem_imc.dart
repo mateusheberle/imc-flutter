@@ -20,17 +20,6 @@ class MensagemIMC extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            'Nível IMC',
-            style: TextStyle(
-              fontSize: 18,
-              color: Colors.grey[800],
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(
-            height: 8,
-          ),
-          Text(
             imcModel.mensagem,
             style: TextStyle(
               fontSize: 14,

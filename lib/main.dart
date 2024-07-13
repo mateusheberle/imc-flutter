@@ -14,7 +14,7 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       title: 'IMC EBAC',
       theme: ThemeData(
-        primarySwatch: Colors.green,
+        primarySwatch: Colors.grey,
       ),
       debugShowCheckedModeBanner: false,
       home: const ImcPage(),

@@ -88,8 +88,13 @@ class ImcController {
       double alturaIMC =
           double.parse(alturaController.value.text.replaceAll(',', '.'));
 
-      double valorIMC = pesoIMC / (alturaIMC * alturaIMC);
-      return valorIMC;
+      if (pesoIMC < 500 && pesoIMC > 0) {
+        if (alturaIMC <= 2.5 && alturaIMC >= 0.5) {
+          double valorIMC = pesoIMC / (alturaIMC * alturaIMC);
+          return valorIMC;
+        }
+      }
+      return 0;
     } catch (e) {
       return 0;
     }
