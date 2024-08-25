@@ -4,9 +4,6 @@
 .flutter-plugins-dependencies
 .packages
 .idea/
-.metadata
-pubspec.lock
-*.iml
 
 # Diretório de build
 /build/
