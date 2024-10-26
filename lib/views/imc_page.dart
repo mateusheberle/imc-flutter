@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 import '../controllers/imc_controller.dart';
 import '../models/imc_model.dart';
@@ -62,80 +64,119 @@ class _ImcPageState extends State<ImcPage> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('IMC'),
+        title: Text(
+          'Calcule seu IMC',
+          style: TextStyle(fontFamily: GoogleFonts.nunito().fontFamily),
+        ),
         centerTitle: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
+        padding: const EdgeInsets.fromLTRB(16.0, 32.0, 16.0, 0),
+        child: Stack(
           children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Expanded(
-                  child: ValueListenableBuilder(
-                    valueListenable: imcController.erroPeso,
-                    builder: (context, value, _) {
-                      return CustomTextField(
-                        controller: imcController.pesoController,
-                        onChanged: (valor) => imcController.validarPeso(valor),
-                        label: 'Peso',
-                        hintText: 'KG (kilogramas)',
-                        isError: value,
-                        focusNode: _pesoFocusNode,
-                        onSubmitted: (value) {
-                          _pesoFocusNode.unfocus();
-                          FocusScope.of(context).requestFocus(_alturaFocusNode);
-                        },
-                      );
-                    },
-                  ),
-                ),
-                const SizedBox(
-                  width: 20,
-                ),
-                Expanded(
-                  child: ValueListenableBuilder(
-                    valueListenable: imcController.erroAltura,
-                    builder: (context, value, _) {
-                      return CustomTextField(
-                        controller: imcController.alturaController,
-                        onChanged: (valor) =>
-                            imcController.validarAltura(valor),
-                        label: 'Altura',
-                        hintText: 'M (metros)',
-                        isError: value,
-                        focusNode: _alturaFocusNode,
-                        onSubmitted: (value) {
-                          _alturaFocusNode.unfocus();
-                          _animationController.forward();
-                        },
-                      );
-                    },
-                  ),
-                ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
+            Align(
+              alignment: Alignment.topCenter,
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ValueListenableBuilder<bool>(
-                    valueListenable: imcController.botaoProcessar,
-                    builder: (context, value, _) {
-                      return ElevatedButton(
-                        onPressed: !value
-                            ? null
-                            : () {
-                                FocusScope.of(context).unfocus();
-                                _animationController.forward();
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        borderRadius: BorderRadius.circular(16.0),
+                      ),
+                      height: size / 2,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 16.0),
+                            child: Text(
+                              'Peso (kilogramas)',
+                              style: TextStyle(
+                                fontFamily: GoogleFonts.nunito().fontFamily,
+                                fontSize: 16,
+                                color: Colors.grey[500],
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(28.0),
+                            child: ValueListenableBuilder(
+                              valueListenable: imcController.erroPeso,
+                              builder: (context, value, _) {
+                                return CustomTextField(
+                                  controller: imcController.pesoController,
+                                  onChanged: (valor) =>
+                                      imcController.validarPeso(valor),
+                                  isError: value,
+                                  focusNode: _pesoFocusNode,
+                                  onSubmitted: (value) {
+                                    _pesoFocusNode.unfocus();
+                                    FocusScope.of(context)
+                                        .requestFocus(_alturaFocusNode);
+                                  },
+                                );
                               },
-                        child: Text('Calcular IMC',
-                            style: TextStyle(color: Colors.grey[800])),
-                      );
-                    },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        borderRadius: BorderRadius.circular(16.0),
+                      ),
+                      height: size / 2,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 16.0),
+                            child: Text(
+                              'Altura (metros)',
+                              style: TextStyle(
+                                fontFamily: GoogleFonts.nunito().fontFamily,
+                                fontSize: 16,
+                                color: Colors.grey[500],
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(28.0),
+                            child: ValueListenableBuilder(
+                              valueListenable: imcController.erroAltura,
+                              builder: (context, value, _) {
+                                return CustomTextField(
+                                  controller: imcController.alturaController,
+                                  onChanged: (valor) =>
+                                      imcController.validarAltura(valor),
+                                  isError: value,
+                                  focusNode: _alturaFocusNode,
+                                  onSubmitted: (value) {
+                                    _alturaFocusNode.unfocus();
+                                    _animationController.forward();
+                                  },
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -160,6 +201,42 @@ class _ImcPageState extends State<ImcPage> with SingleTickerProviderStateMixin {
                   ),
                 );
               },
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 32.0),
+                child: ValueListenableBuilder<bool>(
+                  valueListenable: imcController.botaoProcessar,
+                  builder: (context, value, _) {
+                    return SizedBox(
+                      width: double.infinity,
+                      height: 50,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.grey[800],
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(24.0),
+                          ),
+                        ),
+                        onPressed: !value
+                            ? null
+                            : () {
+                                FocusScope.of(context).unfocus();
+                                _animationController.forward();
+                              },
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text('Calcular IMC',
+                              style: TextStyle(
+                                  color: Colors.grey[100],
+                                  fontFamily: GoogleFonts.nunito().fontFamily)),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
             ),
           ],
         ),
@@ -206,11 +283,6 @@ class _ImcPageState extends State<ImcPage> with SingleTickerProviderStateMixin {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     ImcAlertItem(
-                      icon: Icon(
-                        Icons.scale,
-                        size: 24,
-                        color: Colors.grey[800],
-                      ),
                       descricao: 'Peso',
                       valorImc: imcModel.peso,
                     ),
@@ -219,11 +291,6 @@ class _ImcPageState extends State<ImcPage> with SingleTickerProviderStateMixin {
                       color: Colors.grey.withOpacity(0.5),
                     ),
                     ImcAlertItem(
-                      icon: Icon(
-                        Icons.height,
-                        size: 24,
-                        color: Colors.grey[800],
-                      ),
                       descricao: 'Altura',
                       valorImc: imcModel.altura,
                     ),
@@ -232,11 +299,6 @@ class _ImcPageState extends State<ImcPage> with SingleTickerProviderStateMixin {
                       color: Colors.grey.withOpacity(0.5),
                     ),
                     ImcAlertItem(
-                      icon: Icon(
-                        Icons.show_chart_outlined,
-                        size: 30,
-                        color: Colors.grey[800],
-                      ),
                       descricao: 'IMC',
                       valorImc: imcController.resultadoImc,
                     ),
@@ -244,7 +306,37 @@ class _ImcPageState extends State<ImcPage> with SingleTickerProviderStateMixin {
                       height: 1,
                       color: Colors.grey.withOpacity(0.5),
                     ),
-                    MensagemIMC(imcModel: imcModel)
+                    MensagemIMC(imcModel: imcModel),
+                    SizedBox(
+                      height: 240,
+                      child: SfRadialGauge(
+                        axes: <RadialAxis>[
+                          RadialAxis(
+                            startAngle: 180,
+                            endAngle: 0,
+                            minimum: 10,
+                            maximum: 40,
+                            pointers: <GaugePointer>[
+                              NeedlePointer(value: imcController.resultadoImc),
+                            ],
+                            ranges: <GaugeRange>[
+                              GaugeRange(
+                                  startValue: 0,
+                                  endValue: 18.49,
+                                  color: Colors.grey[300]),
+                              GaugeRange(
+                                  startValue: 18.5,
+                                  endValue: 25,
+                                  color: Colors.grey[500]),
+                              GaugeRange(
+                                  startValue: 25,
+                                  endValue: 40,
+                                  color: Colors.grey[800]),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
         );

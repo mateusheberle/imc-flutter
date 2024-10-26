@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AlertTitle extends StatelessWidget {
   const AlertTitle({
@@ -16,10 +17,14 @@ class AlertTitle extends StatelessWidget {
           topRight: Radius.circular(8),
         ),
       ),
-      child: const Center(
+      child: Center(
         child: Text(
           'Resultado IMC',
-          style: TextStyle(fontSize: 20, color: Colors.white),
+          style: TextStyle(
+            fontSize: 20,
+            color: Colors.white,
+            fontFamily: GoogleFonts.nunito().fontFamily,
+          ),
         ),
       ),
     );

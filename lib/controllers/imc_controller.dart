@@ -102,21 +102,40 @@ class ImcController {
 
   String _obterMensagemIMC(double valorIMC) {
     if (valorIMC < 16) {
-      return 'Baixo peso muito grave\nabaixo de 16 kg/m²';
+      return 'Baixo peso muito grave';
     } else if (valorIMC <= 16.99) {
-      return 'Baixo peso grave\nentre 16 e 16,99 kg/m²';
+      return 'Baixo peso grave';
     } else if (valorIMC <= 18.49) {
-      return 'Baixo peso\nentre 17 e 18,49 kg/m²';
+      return 'Baixo peso';
     } else if (valorIMC <= 24.99) {
-      return 'Peso normal\nentre 18,50 e 24,99 kg/m²';
+      return 'Peso normal';
     } else if (valorIMC <= 29.99) {
-      return 'Sobrepeso\nentre 25 e 29,99 kg/m²';
+      return 'Sobrepeso';
     } else if (valorIMC <= 34.99) {
-      return 'Obesidade grau I\nentre 30 e 34,99 kg/m²';
+      return 'Obesidade grau I';
     } else if (valorIMC <= 39.99) {
-      return 'Obesidade grau II\nentre 35 e 39,99 kg/m²';
+      return 'Obesidade grau II';
     } else {
-      return 'Obesidade grau III (obesidade mórbida)\nmaior que 40 kg/m²';
+      return 'Obesidade grau III (obesidade mórbida)';
     }
   }
+  // String _obterMensagemIMC(double valorIMC) {
+  //   if (valorIMC < 16) {
+  //     return 'Baixo peso muito grave\nabaixo de 16 kg/m²';
+  //   } else if (valorIMC <= 16.99) {
+  //     return 'Baixo peso grave\nentre 16 e 16,99 kg/m²';
+  //   } else if (valorIMC <= 18.49) {
+  //     return 'Baixo peso\nentre 17 e 18,49 kg/m²';
+  //   } else if (valorIMC <= 24.99) {
+  //     return 'Peso normal\nentre 18,50 e 24,99 kg/m²';
+  //   } else if (valorIMC <= 29.99) {
+  //     return 'Sobrepeso\nentre 25 e 29,99 kg/m²';
+  //   } else if (valorIMC <= 34.99) {
+  //     return 'Obesidade grau I\nentre 30 e 34,99 kg/m²';
+  //   } else if (valorIMC <= 39.99) {
+  //     return 'Obesidade grau II\nentre 35 e 39,99 kg/m²';
+  //   } else {
+  //     return 'Obesidade grau III (obesidade mórbida)\nmaior que 40 kg/m²';
+  //   }
+  // }
 }

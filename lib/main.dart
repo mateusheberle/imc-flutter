@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'views/imc_page.dart';
+import 'package:imc_flutter/views/splash_screen.dart';
 
 void main() {
   runApp(const MainApp());
@@ -17,7 +16,7 @@ class MainApp extends StatelessWidget {
         primarySwatch: Colors.grey,
       ),
       debugShowCheckedModeBanner: false,
-      home: const ImcPage(),
+      home: const SplashScreen(),
     );
   }
 }
